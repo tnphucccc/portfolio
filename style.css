@@ -3,6 +3,7 @@ body {
     font-size: 13px;
     max-width: 960px;
     margin: auto;
+
 }
 
 h1 {
@@ -39,6 +40,14 @@ section {
 
 i {
     margin-right: .5em;
+}
+
+a {
+    color: blue;
+}
+
+a:hover {
+    color: purple;
 }
 
 p {
