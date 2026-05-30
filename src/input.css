@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg font-sans text-text antialiased;
+  }
+
+  /* Offset anchored sections for the sticky nav */
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  /* Centered page column */
+  .wrap {
+    @apply mx-auto w-full max-w-content px-6;
+  }
+
+  /* "// section" terminal-style heading */
+  .section-title {
+    @apply mb-7 font-mono text-sm font-medium tracking-widest text-accent;
+  }
+
+  /* Inline accent highlight */
+  .hl {
+    @apply text-accent;
+  }
+
+  /* Tech pill */
+  .tag {
+    @apply inline-flex items-center rounded border border-line bg-surface-2 px-2.5 py-1 font-mono text-xs text-muted;
+  }
+
+  /* Project card */
+  .card {
+    @apply flex flex-col rounded-xl border border-line bg-surface p-6 transition-colors duration-200 hover:border-accent/40;
+  }
+
+  /* Award badge */
+  .badge {
+    @apply mb-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 font-mono text-xs text-accent;
+  }
+
+  /* Group label in the skills grid */
+  .skill-label {
+    @apply mb-3 font-mono text-xs font-medium uppercase tracking-wider text-muted;
+  }
+
+  /* Nav + footer links */
+  .nav-link {
+    @apply font-mono text-sm text-muted transition-colors hover:text-accent;
+  }
+
+  /* Hero / footer contact links with leading icon */
+  .contact-link {
+    @apply inline-flex items-center gap-2 font-mono text-sm text-muted transition-colors hover:text-accent;
+  }
+
+  /* Inline icon sized to the current text */
+  .ico {
+    @apply inline-block h-[1.1em] w-[1.1em] shrink-0 fill-current;
+  }
+
+  /* Accent-marker bullet list */
+  .bullets {
+    @apply space-y-2 leading-relaxed text-muted;
+  }
+  .bullets > li {
+    @apply relative pl-5;
+  }
+  .bullets > li::before {
+    content: '▸';
+    @apply absolute left-0 text-accent;
+  }
+}

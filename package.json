@@ -1,8 +1,13 @@
 {
-  "dependencies": {
-    "tailwindcss": "^3.4.3"
-  },
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "Personal portfolio for Phuc Tran Nguyen",
+  "private": true,
   "scripts": {
-    "build-css": "tailwind build src/tailwind.css -o src/style.css"
+    "build": "tailwindcss -i src/input.css -o style.css --minify",
+    "dev": "tailwindcss -i src/input.css -o style.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.3"
   }
 }

@@ -3,254 +3,499 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Phuc's Resume</title>
+    <title>Phuc Tran Nguyen — Software Engineer</title>
+    <meta
+      name="description"
+      content="Phuc Tran Nguyen — Software Engineer building across the stack, from ML and backend systems to web apps. Based in Ho Chi Minh City, Vietnam."
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Phuc Tran Nguyen — Software Engineer" />
+    <meta
+      property="og:description"
+      content="Software Engineer building across the stack — from ML and backend systems to web apps."
+    />
+    <meta property="og:type" content="website" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" href="style.css" />
   </head>
-  <body
-    style="background-color: #f5f5dc; font-family: 'Roboto', sans-serif"
-    class="py-10 px-5"
-  >
-    <div class="max-w-4xl mx-auto bg-white p-5 rounded shadow">
-      <main class="space-y-6">
-        <div class="items-center mb-6">
-          <div class="text-center">
-            <h1 class="text-3xl mb-2">Tran Nguyen <b>Phuc</b></h1>
-            <p>Software Engineer Intern</p>
+
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-surface focus:px-3 focus:py-2 focus:text-accent"
+      >Skip to content</a
+    >
+
+    <!-- Icon sprite: define once, reuse via <use> -->
+    <svg width="0" height="0" class="hidden" aria-hidden="true">
+      <symbol id="i-pin" viewBox="0 0 24 24">
+        <path
+          d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"
+        />
+      </symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24">
+        <path
+          d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"
+        />
+      </symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24">
+        <path
+          d="M6.62 10.79a15.53 15.53 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24 11.36 11.36 0 0 0 3.57.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.36 11.36 0 0 0 .57 3.57 1 1 0 0 1-.25 1.02l-2.2 2.2z"
+        />
+      </symbol>
+      <symbol id="i-linkedin" viewBox="0 0 24 24">
+        <path
+          d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.71h.05c.53-1 1.83-2.06 3.76-2.06C20.5 8.65 21 11.2 21 14.5V21h-4v-5.7c0-1.36-.02-3.1-1.9-3.1-1.9 0-2.2 1.48-2.2 3v5.8H9z"
+        />
+      </symbol>
+      <symbol id="i-github" viewBox="0 0 24 24">
+        <path
+          d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.73-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.85.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.36 9.36 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.48-.01 2.82 0 .27.18.6.69.49A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"
+        />
+      </symbol>
+    </svg>
+
+    <!-- Sticky nav -->
+    <header
+      id="top"
+      class="sticky top-0 z-50 border-b border-line bg-bg/80 backdrop-blur"
+    >
+      <div class="wrap flex h-16 items-center justify-between">
+        <a href="#top" class="font-mono text-base font-bold text-text">
+          <span class="text-muted">~/</span>phuc<span class="text-accent">_</span>
+        </a>
+        <nav class="hidden gap-6 sm:flex" aria-label="Primary">
+          <a class="nav-link" href="#about">about</a>
+          <a class="nav-link" href="#skills">skills</a>
+          <a class="nav-link" href="#work">work</a>
+          <a class="nav-link" href="#projects">projects</a>
+          <a class="nav-link" href="#education">education</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- Hero -->
+      <section class="wrap pb-12 pt-16 sm:pb-16 sm:pt-24" aria-labelledby="hero-name">
+        <p class="mb-4 font-mono text-sm tracking-widest text-accent">
+          // software engineer
+        </p>
+        <h1
+          id="hero-name"
+          class="text-4xl font-bold leading-tight tracking-tight sm:text-6xl"
+        >
+          Phuc Tran Nguyen
+        </h1>
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-muted">
+          Building across the stack — from <span class="hl">ML</span> and
+          <span class="hl">backend systems</span> to
+          <span class="hl">web apps</span>.
+        </p>
+        <p class="mt-4 flex items-center gap-2 font-mono text-sm text-muted">
+          <svg class="ico" aria-hidden="true"><use href="#i-pin" /></svg>
+          Ho Chi Minh City, Vietnam
+        </p>
+
+        <ul class="mt-7 flex flex-wrap gap-x-6 gap-y-3" aria-label="Contact">
+          <li>
+            <a class="contact-link" href="mailto:tnphuc.personal@gmail.com">
+              <svg class="ico" aria-hidden="true"><use href="#i-mail" /></svg>
+              Email
+            </a>
+          </li>
+          <li>
+            <a class="contact-link" href="tel:+84901976650">
+              <svg class="ico" aria-hidden="true"><use href="#i-phone" /></svg>
+              (+84) 90 197-6650
+            </a>
+          </li>
+          <li>
+            <a
+              class="contact-link"
+              href="https://www.linkedin.com/in/phuc-tran-hcmiu/"
+              target="_blank"
+              rel="noopener"
+            >
+              <svg class="ico" aria-hidden="true"><use href="#i-linkedin" /></svg>
+              LinkedIn
+            </a>
+          </li>
+          <li>
+            <a
+              class="contact-link"
+              href="https://github.com/tnphucccc"
+              target="_blank"
+              rel="noopener"
+            >
+              <svg class="ico" aria-hidden="true"><use href="#i-github" /></svg>
+              GitHub
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- About -->
+      <section
+        id="about"
+        class="wrap border-t border-line py-12 sm:py-16"
+        aria-labelledby="about-title"
+      >
+        <h2 class="section-title" id="about-title">// about</h2>
+        <p class="max-w-3xl text-lg leading-relaxed text-muted">
+          Software Engineer working across backend systems, infrastructure, and
+          ML — currently building game-server infrastructure at
+          <span class="hl">Metacraft Studio</span>. Open to full-time software
+          engineering roles.
+        </p>
+      </section>
+
+      <!-- Skills -->
+      <section
+        id="skills"
+        class="wrap border-t border-line py-12 sm:py-16"
+        aria-labelledby="skills-title"
+      >
+        <h2 class="section-title" id="skills-title">// skills</h2>
+        <div class="grid gap-8 sm:grid-cols-2">
+          <div>
+            <h3 class="skill-label">Languages</h3>
+            <ul class="flex flex-wrap gap-2">
+              <li class="tag">Go</li>
+              <li class="tag">Rust</li>
+              <li class="tag">Python</li>
+              <li class="tag">TypeScript / JavaScript</li>
+              <li class="tag">Java</li>
+              <li class="tag">C++</li>
+            </ul>
           </div>
-          <!-- <img src="your-image-url" alt="Your Name" class="h-24 w-24 rounded-full"> -->
-          <hr class="my-4 border-gray-400" />
+          <div>
+            <h3 class="skill-label">Backend &amp; Infra</h3>
+            <ul class="flex flex-wrap gap-2">
+              <li class="tag">GraphQL</li>
+              <li class="tag">REST</li>
+              <li class="tag">AWS (CDK, Lambda, EC2)</li>
+              <li class="tag">Docker</li>
+              <li class="tag">MongoDB</li>
+              <li class="tag">Redis</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="skill-label">CS Fundamentals</h3>
+            <ul class="flex flex-wrap gap-2">
+              <li class="tag">Data Structures &amp; Algorithms</li>
+              <li class="tag">Complexity Analysis</li>
+              <li class="tag">Design Patterns</li>
+              <li class="tag">Concurrency</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="skill-label">AI / ML</h3>
+            <ul class="flex flex-wrap gap-2">
+              <li class="tag">PyTorch (GPT / Transformer)</li>
+              <li class="tag">scikit-learn</li>
+              <li class="tag">ML pipeline design</li>
+            </ul>
+          </div>
         </div>
+      </section>
 
-        <section>
-          <h2 class="text-xl font-bold">Contact</h2>
-          <div class="mt-2 grid grid-cols-2 gap-4">
-            <p>
-              <i class="fas fa-envelope"></i> Email:
-              <a
-                href="mailto:tnphuc.ityu@gmail.com"
-                class="text-blue-500 hover:text-red-500"
-                >tnphuc.ityu@gmail.com</a
-              >
+      <!-- Experience -->
+      <section
+        id="work"
+        class="wrap border-t border-line py-12 sm:py-16"
+        aria-labelledby="work-title"
+      >
+        <h2 class="section-title" id="work-title">// experience</h2>
+        <div class="space-y-10">
+          <article>
+            <div
+              class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between"
+            >
+              <h3 class="text-lg font-semibold text-text">Software Engineer</h3>
+              <span class="font-mono text-sm text-muted">Jan 2025 – Present</span>
+            </div>
+            <p class="mt-1 font-mono text-sm text-accent">
+              Metacraft Studio · Ho Chi Minh City
             </p>
-            <p>
-              <i class="fas fa-phone"></i> Phone:
-              <a
-                href="tel:+84931847806"
-                class="text-blue-500 hover:text-red-500"
-                >(+84) 93-184-7806</a
-              >
-            </p>
-            <p>
-              <i class="fab fa-linkedin"></i> LinkedIn:
-              <a
-                href="https://www.linkedin.com/in/phuc-tran-hcmiu/"
-                class="text-blue-500 hover:text-red-500"
-                >Tran Nguyen Phuc</a
-              >
-            </p>
-            <p>
-              <i class="fab fa-github"></i> GitHub:
-              <a
-                href="https://github.com/tnphucccc"
-                class="text-blue-500 hover:text-red-500"
-                >tnphucccc</a
-              >
-            </p>
-          </div>
-          <hr class="my-4 border-gray-400" />
-        </section>
+            <ul class="bullets mt-4">
+              <li>
+                Built the multiplayer game server in
+                <span class="hl">Rust</span> (Tokio + Axum) with a per-room actor
+                pattern and MongoDB persistence.
+              </li>
+              <li>
+                Provisioned backend infrastructure as code with AWS CDK (Lambda,
+                EC2, CloudWatch analytics pipeline), added IAP server-to-server
+                receipt verification for iOS and Android, and tuned schemas and
+                indexes on the Under Realm Web3 TCG for consistent query
+                performance.
+              </li>
+              <li>
+                Ran regular code reviews enforcing idiomatic TypeScript/Rust
+                patterns, security hygiene, and API reliability.
+              </li>
+            </ul>
+          </article>
 
-        <section>
-          <h2 class="text-xl font-bold">Objectives</h2>
-          <div class="mt-2">
-            <p>
-              I am a student at International University - VNUHCM, majoring in
-              Computer Science. I am looking for an internship position in the
-              field of software development to gain practical experience and
-              apply my knowledge to real-world projects.
+          <article>
+            <div
+              class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between"
+            >
+              <h3 class="text-lg font-semibold text-text">
+                Software Engineer Intern
+              </h3>
+              <span class="font-mono text-sm text-muted">Sep – Dec 2024</span>
+            </div>
+            <p class="mt-1 font-mono text-sm text-accent">
+              Metacraft Studio · Ho Chi Minh City
             </p>
-          </div>
-          <hr class="my-4 border-gray-400" />
-        </section>
+            <ul class="bullets mt-4">
+              <li>
+                Built GraphQL APIs in TypeScript/Node.js, contributing
+                <span class="hl">500+ commits</span> across card data, player
+                systems, and API reliability.
+              </li>
+            </ul>
+          </article>
 
-        <section>
-          <h2 class="text-xl font-bold">Education</h2>
-          <div class="mt-2">
-            <h3 class="text-lg font-semibold">
-              International University - VNUHCM
+          <article>
+            <div
+              class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between"
+            >
+              <h3 class="text-lg font-semibold text-text">
+                Teaching Assistant — DSA &amp; OOP
+              </h3>
+              <span class="font-mono text-sm text-muted">Sep 2023 – Present</span>
+            </div>
+            <p class="mt-1 font-mono text-sm text-accent">
+              International University – VNUHCM · Ho Chi Minh City
+            </p>
+            <ul class="bullets mt-4">
+              <li>
+                Evaluated code submissions across DSA and OOP courses — assessing
+                correctness, time/space complexity, and idiomatic quality; gave
+                structured written feedback on assignments and exams.
+              </li>
+              <li>
+                Mentored students on algorithm design, clean code principles, and
+                design patterns through workshops and 1-on-1 guidance.
+              </li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section
+        id="projects"
+        class="wrap border-t border-line py-12 sm:py-16"
+        aria-labelledby="projects-title"
+      >
+        <h2 class="section-title" id="projects-title">// projects</h2>
+        <div class="grid gap-5 sm:grid-cols-2">
+          <article class="card">
+            <div class="mb-3 flex items-start justify-between gap-3">
+              <h3 class="font-mono text-lg font-bold text-text">GPTAtHome</h3>
+              <a
+                class="text-muted transition-colors hover:text-accent"
+                href="https://github.com/tnphucccc/gpt-at-home"
+                target="_blank"
+                rel="noopener"
+                aria-label="GPTAtHome on GitHub"
+              >
+                <svg class="ico" aria-hidden="true"><use href="#i-github" /></svg>
+              </a>
+            </div>
+            <p class="text-sm leading-relaxed text-muted">
+              Built Bigram and full GPT/Transformer architectures from scratch in
+              PyTorch (multi-head attention, positional encodings, layer norm)
+              with comprehensive unit tests.
+            </p>
+            <ul class="mt-auto flex flex-wrap gap-2 pt-4">
+              <li class="tag">Python</li>
+              <li class="tag">PyTorch</li>
+              <li class="tag">Transformers</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="mb-3 flex items-start justify-between gap-3">
+              <h3 class="font-mono text-lg font-bold text-text">MangaHub</h3>
+              <a
+                class="text-muted transition-colors hover:text-accent"
+                href="https://github.com/tnphucccc/mangahub"
+                target="_blank"
+                rel="noopener"
+                aria-label="MangaHub on GitHub"
+              >
+                <svg class="ico" aria-hidden="true"><use href="#i-github" /></svg>
+              </a>
+            </div>
+            <p class="text-sm leading-relaxed text-muted">
+              Go monorepo exposing one service across 5 protocols — REST, GraphQL,
+              gRPC, WebSocket, and CLI — showcasing idiomatic Go architecture and
+              multi-protocol API design.
+            </p>
+            <ul class="mt-auto flex flex-wrap gap-2 pt-4">
+              <li class="tag">Go</li>
+              <li class="tag">gRPC</li>
+              <li class="tag">GraphQL</li>
+              <li class="tag">WebSocket</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="mb-3 flex items-start justify-between gap-3">
+              <h3 class="font-mono text-lg font-bold text-text">SolMe</h3>
+              <a
+                class="text-muted transition-colors hover:text-accent"
+                href="https://github.com/tnphucccc/sol-me"
+                target="_blank"
+                rel="noopener"
+                aria-label="SolMe on GitHub"
+              >
+                <svg class="ico" aria-hidden="true"><use href="#i-github" /></svg>
+              </a>
+            </div>
+            <p class="badge">🏆 3rd Prize · Solana Consumer Hack 16</p>
+            <p class="text-sm leading-relaxed text-muted">
+              Telegram crypto-wallet assistant that simplifies the crypto
+              transaction process, built end-to-end in TypeScript under hackathon
+              constraints.
+            </p>
+            <ul class="mt-auto flex flex-wrap gap-2 pt-4">
+              <li class="tag">TypeScript</li>
+              <li class="tag">Solana</li>
+              <li class="tag">Telegram</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <div class="mb-3 flex items-start justify-between gap-3">
+              <h3 class="font-mono text-lg font-bold text-text">LibMan</h3>
+              <a
+                class="text-muted transition-colors hover:text-accent"
+                href="https://github.com/tnphucccc/lib-man"
+                target="_blank"
+                rel="noopener"
+                aria-label="LibMan on GitHub"
+              >
+                <svg class="ico" aria-hidden="true"><use href="#i-github" /></svg>
+              </a>
+            </div>
+            <p class="text-sm leading-relaxed text-muted">
+              Led an 8-person team (157 commits) building a full-stack library
+              management system in Java Spring Boot + React/TypeScript; designed
+              RESTful APIs and managed frontend state with Hooks.
+            </p>
+            <ul class="mt-auto flex flex-wrap gap-2 pt-4">
+              <li class="tag">Java</li>
+              <li class="tag">Spring Boot</li>
+              <li class="tag">React</li>
+              <li class="tag">TypeScript</li>
+            </ul>
+          </article>
+
+          <article class="card sm:col-span-2">
+            <div class="mb-3 flex items-start justify-between gap-3">
+              <h3 class="font-mono text-lg font-bold text-text">
+                House Price Prediction
+              </h3>
+              <a
+                class="text-muted transition-colors hover:text-accent"
+                href="https://github.com/tnphucccc/house-price-prediction"
+                target="_blank"
+                rel="noopener"
+                aria-label="House Price Prediction on GitHub"
+              >
+                <svg class="ico" aria-hidden="true"><use href="#i-github" /></svg>
+              </a>
+            </div>
+            <p class="text-sm leading-relaxed text-muted">
+              End-to-end ML pipeline on the Kaggle House Prices dataset — data
+              ingestion, EDA, and feature engineering, then comparing regression
+              models (Linear Regression, Random Forest) evaluated by RMSE and R².
+            </p>
+            <ul class="mt-auto flex flex-wrap gap-2 pt-4">
+              <li class="tag">Python</li>
+              <li class="tag">scikit-learn</li>
+              <li class="tag">Jupyter</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- Education -->
+      <section
+        id="education"
+        class="wrap border-t border-line py-12 sm:py-16"
+        aria-labelledby="education-title"
+      >
+        <h2 class="section-title" id="education-title">// education</h2>
+        <article>
+          <div
+            class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between"
+          >
+            <h3 class="text-lg font-semibold text-text">
+              Bachelor of Computer Science
             </h3>
-            <div class="flex justify-between items-center">
-              <h4 class="text-lg font-medium text-gray-700">
-                Bachelor of Computer Science
-              </h4>
-              <p class="text-gray-600">Sep 2021 - Present</p>
-            </div>
-            <p class="text-gray-500">
-              <b>Relevant Coursework:</b> Object-Oriented Programming, Object-Oriented
-              Analysis and Design, Algorithms & Data Structures, Principles of
-              Database Management, Web Application Development, and C/C++
-              Programming.
-            </p>
-            <p class="text-gray-500 font-bold">Member of CSE Youth Union</p>
-            <p class="text-gray-500 font-bold">Member of IoTs Club</p>
+            <span class="font-mono text-sm text-muted">Expected 2026</span>
           </div>
-          <hr class="my-4 border-gray-400" />
-        </section>
+          <p class="mt-1 font-mono text-sm text-accent">
+            International University – VNUHCM
+          </p>
+          <ul class="bullets mt-4">
+            <li>GPA 3.1 · IELTS 6.0</li>
+            <li>
+              Thesis: Dynamic Difficulty Adjustment in 2D platformers (Unity).
+            </li>
+            <li>Member of CSE Youth Union · Member of IoTs Club.</li>
+          </ul>
+        </article>
+      </section>
+    </main>
 
-        <!-- Skills will separated by technical skills and softskils -->
-        <section>
-          <h2 class="text-xl font-bold">Skills</h2>
-          <div class="max-w-3xl mx-auto">
-            <div class="mt-2 flex justify">
-              <h3 class="text-lg font-semibold">Technical Skills</h3>
-              <div class="ml-44">
-                <span class="block"
-                  >- Programming Languages: Java, Python, C/C++, C#</span
-                >
-                <span class="block">- Database Management: MySQL, MongoDB</span>
-                <span class="block"
-                  >- Tools: Git, Fork, VS Code, IntelliJ IDEA</span
-                >
-              </div>
-            </div>
-            <div class="mt-2 flex justify">
-              <h3 class="text-lg font-semibold mr-3">Soft Skills</h3>
-              <div class="ml-52">
-                <span class="block">- Problem-solving</span>
-                <span class="block">- Teamwork</span>
-                <span class="block">- Communication</span>
-                <span class="block">- Time Management</span>
-              </div>
-            </div>
-          </div>
-          <hr class="my-4 border-gray-400" />
-        </section>
-
-        <section>
-          <h2 class="text-xl font-bold">Experience</h2>
-          <div class="mt-2">
-            <!-- Repeat this block for each job -->
-            <div class="flex justify-between items-center">
-              <h3 class="text-lg font-semibold">
-                Software Engineer Internship, AQ Tech
-              </h3>
-              <p class="text-gray-500">Feb 2024 - Expected May 2024</p>
-            </div>
-            <ul class="list-disc ml-5">
-              <li>
-                Working on a project using .NET Core and Orchard Framework
-              </li>
-            </ul>
-            <!-- Teaching Assistant, International University -->
-            <div class="flex justify-between items-center mt-2">
-              <h3 class="text-lg font-semibold">
-                Teaching Assistant, International University
-              </h3>
-              <p class="text-gray-500">Sep 2023 - Present</p>
-            </div>
-            <ul class="list-disc ml-5">
-              <li>Assisted students in Object-Oriented Programming course</li>
-            </ul>
-          </div>
-          <hr class="my-4 border-gray-400" />
-        </section>
-        <!-- Add more sections here within the main tag -->
-        <section>
-          <h2 class="text-xl font-bold">Projects</h2>
-          <div class="mt-2">
-            <!-- Repeat this block for each project -->
-            <div class="flex justify-between items-center">
-              <h3 class="text-lg font-semibold">Bomberman Adventure</h3>
-              <p class="text-gray-500">Since Sep 2022</p>
-            </div>
-            <ul class="list-disc ml-5">
-              <li>
-                A simple 2D Game using Java and Object-Oriented Programming
-                knowledge. Worked as the team leader and project manager.
-              </li>
-              <li>
-                <a
-                  href="https://github.com/tnphucccc/Bomberman-Adventure"
-                  class="text-blue-500 hover:text-red-500"
-                  >GitHub Repository</a
-                >
-              </li>
-            </ul>
-            <!-- Project 2 -->
-            <div class="flex justify-between items-center mt-2">
-              <h3 class="text-lg font-semibold">Catch Me If You Can</h3>
-              <p class="text-gray-500">Since Feb 2023</p>
-            </div>
-            <ul class="list-disc ml-5">
-              <li>
-                Creating a tag game using Algorithms & Data Structures knowledge
-                using Java to implement. Worked as the team leader and project
-                manager.
-              </li>
-              <li>
-                <a
-                  href="https://github.com/tnphucccc/Catch-Me-If-You-Can"
-                  class="text-blue-500 hover:text-red-500"
-                  >GitHub Repository</a
-                >
-              </li>
-            </ul>
-            <div class="flex justify-between items-center mt-2">
-              <h3 class="text-lg font-semibold">TasKing</h3>
-              <p class="text-gray-500">Since Sep 2023</p>
-            </div>
-            <ul class="list-disc ml-5">
-              <li>
-                Built a website to manage tasks and projects by using ReactJS,
-                NodeJS, TailwindCSS, and MongoDB. Worked as a front-end
-                developer and report writer.
-              </li>
-              <li>
-                <a
-                  href="https://github.com/tnphucccc/TasKing"
-                  class="text-blue-500 hover:text-red-500"
-                  >GitHub Repository</a
-                >
-              </li>
-            </ul>
-          </div>
-          <hr class="my-4 border-gray-400" />
-        </section>
-
-        <section>
-          <h2 class="text-xl font-bold">Extra-Curricular Activities</h2>
-          <div class="mt-2">
-            <div class="flex justify-between items-center">
-              <h3 class="text-lg font-semibold">Vietnam National Secondary Student Science and Engineering Fair</h3>
-              <p class="text-gray-500">Academic Year 2018 - 2019</p>
-            </div>
-            <ul class="list-disc ml-5">
-              <li>
-                Participated in the contest at National level in the field of Robotics and Intelligent Machines
-              </li>
-            </ul>
-            <div class="flex justify-between items-center mt-2">
-              <h3 class="text-lg font-semibold">Social Works</h3>
-              <p class="text-gray-500">Since Nov 2021</p>
-            </div>
-            <ul class="list-disc ml-5">
-              <li>
-                Actively participated in social activities through CSE Youth Union
-              </li>
-            </ul>
-        </section>
-      </main>
-    </div>
+    <!-- Footer -->
+    <footer class="border-t border-line">
+      <div
+        class="wrap flex flex-col gap-4 py-8 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <p class="font-mono text-sm text-muted">
+          Phuc Tran Nguyen · Software Engineer
+        </p>
+        <ul class="flex flex-wrap gap-x-6 gap-y-2" aria-label="Contact">
+          <li>
+            <a class="nav-link" href="mailto:tnphuc.personal@gmail.com"
+              >tnphuc.personal@gmail.com</a
+            >
+          </li>
+          <li>
+            <a
+              class="nav-link"
+              href="https://github.com/tnphucccc"
+              target="_blank"
+              rel="noopener"
+              >github.com/tnphucccc</a
+            >
+          </li>
+          <li>
+            <a
+              class="nav-link"
+              href="https://www.linkedin.com/in/phuc-tran-hcmiu/"
+              target="_blank"
+              rel="noopener"
+              >LinkedIn</a
+            >
+          </li>
+        </ul>
+      </div>
+    </footer>
   </body>
 </html>
