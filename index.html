@@ -150,9 +150,12 @@
         <h2 class="section-title" id="about-title">// about</h2>
         <p class="max-w-3xl text-lg leading-relaxed text-muted">
           Software Engineer working across backend systems, infrastructure, and
-          ML — currently building game-server infrastructure at
-          <span class="hl">Metacraft Studio</span>. Open to full-time software
-          engineering roles.
+          ML — currently building game-server infrastructure for
+          <span class="hl">Under Realm TCG</span> at
+          <span class="hl">Metacraft Studio</span>. I work
+          <span class="hl">AI-first</span>, using AI-assisted coding tools daily
+          and reviewing AI-generated code in production. Open to full-time
+          software engineering roles.
         </p>
       </section>
 
@@ -180,6 +183,7 @@
             <ul class="flex flex-wrap gap-2">
               <li class="tag">GraphQL</li>
               <li class="tag">REST</li>
+              <li class="tag">gRPC</li>
               <li class="tag">AWS (CDK, Lambda, EC2)</li>
               <li class="tag">Docker</li>
               <li class="tag">MongoDB</li>
@@ -203,6 +207,14 @@
               <li class="tag">ML pipeline design</li>
             </ul>
           </div>
+          <div>
+            <h3 class="skill-label">AI-Assisted Dev</h3>
+            <ul class="flex flex-wrap gap-2">
+              <li class="tag">Claude Code</li>
+              <li class="tag">GitHub Copilot</li>
+              <li class="tag">Reviewing AI-generated code</li>
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -222,24 +234,36 @@
               <span class="font-mono text-sm text-muted">Jan 2025 – Present</span>
             </div>
             <p class="mt-1 font-mono text-sm text-accent">
-              Metacraft Studio · Ho Chi Minh City
+              Metacraft Studio · Under Realm TCG · Ho Chi Minh City
             </p>
             <ul class="bullets mt-4">
               <li>
-                Built the multiplayer game server in
-                <span class="hl">Rust</span> (Tokio + Axum) with a per-room actor
-                pattern and MongoDB persistence.
+                Built the authoritative multiplayer duel server in
+                <span class="hl">Rust</span> (Tokio + Axum) using a per-room actor
+                pattern, with real-time state synchronization that reconnects
+                clients from stale views mid-duel.
               </li>
               <li>
-                Provisioned backend infrastructure as code with AWS CDK (Lambda,
-                EC2, CloudWatch analytics pipeline), added IAP server-to-server
-                receipt verification for iOS and Android, and tuned schemas and
-                indexes on the Under Realm Web3 TCG for consistent query
-                performance.
+                Built the <span class="hl">PvE bot system</span> — concurrency-safe
+                bot matchmaking and scheduled duel orchestration, with a decision
+                engine scoring skill targeting and tiered deck selection.
               </li>
               <li>
-                Ran regular code reviews enforcing idiomatic TypeScript/Rust
-                patterns, security hygiene, and API reliability.
+                Architected the in-game economy — multi-currency store, inventory,
+                and a CDN asset pipeline — on <span class="hl">GraphQL</span> and
+                <span class="hl">MongoDB</span>, improving query performance
+                <span class="hl">30%</span> with aggregation-based loaders.
+              </li>
+              <li>
+                Designed and shipped <span class="hl">AWS CDK</span> infrastructure
+                (Lambda, EC2, CloudWatch analytics pipeline) and server-to-server
+                IAP receipt verification for iOS and Android.
+              </li>
+              <li>
+                Lead code reviews with <span class="hl">AI-assisted tooling</span>
+                — triaging diffs and validating AI-generated code — enforcing
+                idiomatic Rust/TypeScript patterns, security hygiene, and API
+                reliability.
               </li>
             </ul>
           </article>
@@ -254,13 +278,19 @@
               <span class="font-mono text-sm text-muted">Sep – Dec 2024</span>
             </div>
             <p class="mt-1 font-mono text-sm text-accent">
-              Metacraft Studio · Ho Chi Minh City
+              Metacraft Studio · Under Realm TCG · Ho Chi Minh City
             </p>
             <ul class="bullets mt-4">
               <li>
-                Built GraphQL APIs in TypeScript/Node.js, contributing
-                <span class="hl">500+ commits</span> across card data, player
-                systems, and API reliability.
+                Designed and shipped the <span class="hl">quest system</span>
+                end-to-end — MongoDB data models and GraphQL APIs in
+                TypeScript/Node.js — with progress tracking across daily, weekly,
+                and all-time quests.
+              </li>
+              <li>
+                Built an interactive <span class="hl">CLI</span> for quest
+                authoring and a duel-tracking pipeline with scheduled match
+                resets, supporting PvE and matchmaking.
               </li>
             </ul>
           </article>
@@ -272,7 +302,7 @@
               <h3 class="text-lg font-semibold text-text">
                 Teaching Assistant — DSA &amp; OOP
               </h3>
-              <span class="font-mono text-sm text-muted">Sep 2023 – Present</span>
+              <span class="font-mono text-sm text-muted">Sep 2023 – Jan 2026</span>
             </div>
             <p class="mt-1 font-mono text-sm text-accent">
               International University – VNUHCM · Ho Chi Minh City
@@ -339,15 +369,15 @@
               </a>
             </div>
             <p class="text-sm leading-relaxed text-muted">
-              Go monorepo exposing one service across 5 protocols — REST, GraphQL,
-              gRPC, WebSocket, and CLI — showcasing idiomatic Go architecture and
-              multi-protocol API design.
+              Manga-tracking platform in Go exposing five concurrent network
+              servers (HTTP/REST, TCP, UDP, gRPC, WebSocket) with JWT auth,
+              multi-device sync, real-time chat, and a CLI client.
             </p>
             <ul class="mt-auto flex flex-wrap gap-2 pt-4">
               <li class="tag">Go</li>
               <li class="tag">gRPC</li>
-              <li class="tag">GraphQL</li>
               <li class="tag">WebSocket</li>
+              <li class="tag">JWT</li>
             </ul>
           </article>
 
@@ -402,33 +432,6 @@
               <li class="tag">TypeScript</li>
             </ul>
           </article>
-
-          <article class="card sm:col-span-2">
-            <div class="mb-3 flex items-start justify-between gap-3">
-              <h3 class="font-mono text-lg font-bold text-text">
-                House Price Prediction
-              </h3>
-              <a
-                class="text-muted transition-colors hover:text-accent"
-                href="https://github.com/tnphucccc/house-price-prediction"
-                target="_blank"
-                rel="noopener"
-                aria-label="House Price Prediction on GitHub"
-              >
-                <svg class="ico" aria-hidden="true"><use href="#i-github" /></svg>
-              </a>
-            </div>
-            <p class="text-sm leading-relaxed text-muted">
-              End-to-end ML pipeline on the Kaggle House Prices dataset — data
-              ingestion, EDA, and feature engineering, then comparing regression
-              models (Linear Regression, Random Forest) evaluated by RMSE and R².
-            </p>
-            <ul class="mt-auto flex flex-wrap gap-2 pt-4">
-              <li class="tag">Python</li>
-              <li class="tag">scikit-learn</li>
-              <li class="tag">Jupyter</li>
-            </ul>
-          </article>
         </div>
       </section>
 
@@ -452,7 +455,7 @@
             International University – VNUHCM
           </p>
           <ul class="bullets mt-4">
-            <li>GPA 3.1 · IELTS 6.0</li>
+            <li>GPA 3.1 · IELTS 6.5</li>
             <li>
               Thesis: Dynamic Difficulty Adjustment in 2D platformers (Unity).
             </li>
