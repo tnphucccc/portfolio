@@ -1,5 +1,54 @@
 ---
-import '../styles/global.css';
+import Base from '../layouts/Base.astro';
+import Entry from '../components/Entry.astro';
+import Hero from '../components/Hero.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Section from '../components/Section.astro';
+import Skills from '../components/Skills.astro';
+import { renderInline } from '../lib/inline';
+import { getEducation, getExperience, getProfile, getProjects, getSkills } from '../lib/content';
+
+const [profile, skills, experience, projects, education] = await Promise.all([
+  getProfile(),
+  getSkills(),
+  getExperience(),
+  getProjects(),
+  getEducation(),
+]);
 ---
 
-<html lang="en"><body><p class="wrap text-accent">scaffold</p></body></html>
+<Base home>
+  <Hero profile={profile} />
+
+  <Section id="about" title="about">
+    <p class="max-w-3xl text-lg leading-relaxed text-muted" set:html={renderInline(profile.about)} />
+  </Section>
+
+  <Section id="skills" title="skills">
+    <Skills groups={skills} />
+  </Section>
+
+  <Section id="work" title="experience">
+    <div class="space-y-10">
+      {
+        experience.map(({ data }) => (
+          <Entry title={data.title} period={data.period} org={data.org} bullets={data.bullets} />
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section id="projects" title="projects">
+    <div class="grid gap-5 sm:grid-cols-2">
+      {projects.map(({ data }) => <ProjectCard project={data} />)}
+    </div>
+  </Section>
+
+  <Section id="education" title="education">
+    {
+      education.map(({ data }) => (
+        <Entry title={data.title} period={data.period} org={data.org} bullets={data.bullets} />
+      ))
+    }
+  </Section>
+</Base>

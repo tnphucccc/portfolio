@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import { renderInline } from '../lib/inline';
+import { isExternal } from '../lib/url';
+
+interface Props {
+  profile: CollectionEntry<'profile'>['data'];
+}
+const { profile } = Astro.props;
+
+const icons = { email: 'mail', phone: 'phone', linkedin: 'linkedin', github: 'github' } as const;
+---
+
+<section class="wrap pb-12 pt-16 sm:pb-16 sm:pt-24" aria-labelledby="hero-name">
+  <p class="mb-4 font-mono text-sm tracking-widest text-accent">// {profile.role.toLowerCase()}</p>
+  <h1 id="hero-name" class="text-4xl font-bold leading-tight tracking-tight sm:text-6xl">
+    {profile.name}
+  </h1>
+  <p class="mt-5 max-w-xl text-lg leading-relaxed text-muted" set:html={renderInline(profile.tagline)} />
+  <p class="mt-4 flex items-center gap-2 font-mono text-sm text-muted">
+    <Icon name="pin" />
+    {profile.location}
+  </p>
+
+  <ul class="mt-7 flex flex-wrap gap-x-6 gap-y-3" aria-label="Contact">
+    {
+      profile.contacts.map((c) => (
+        <li>
+          <a
+            class="contact-link"
+            href={c.href}
+            target={isExternal(c.href) ? '_blank' : undefined}
+            rel={isExternal(c.href) ? 'noopener' : undefined}
+          >
+            <Icon name={icons[c.kind]} />
+            {c.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
