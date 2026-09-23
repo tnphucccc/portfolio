@@ -1,32 +1,58 @@
 # portfolio
 
-Personal portfolio for **Phuc Tran Nguyen** — a single-page, statically-served
-résumé site.
+Personal portfolio for **Phuc Tran Nguyen**, live at
+<https://tnphucccc.github.io/portfolio/>.
 
 ## Stack
 
-- Plain HTML (`index.html`)
-- [Tailwind CSS](https://tailwindcss.com/) v3 — compiled from `src/input.css` to
-  `style.css`
-- Self-hosted Google Fonts (Inter + JetBrains Mono), no other runtime
-  dependencies
+- [Astro](https://astro.build/) 7 — static output
+- [Tailwind CSS](https://tailwindcss.com/) v4 via `@tailwindcss/vite`
+- Inter + JetBrains Mono from Google Fonts
 
 ## Develop
 
-Install once, then rebuild the stylesheet on change:
-
 ```bash
-npm install
-npm run dev      # watch + rebuild style.css
+pnpm install
+pnpm dev        # http://localhost:4321/portfolio/
+pnpm test       # unit tests
+pnpm build      # unit tests + type-check + build to dist/
+pnpm preview    # serve dist/
 ```
 
-To preview, open `index.html` in a browser (no server required).
+## Editing content
 
-## Build
+All text lives in `src/content/` and is validated on build:
 
-```bash
-npm run build    # writes a minified style.css
+| File | Section |
+|---|---|
+| `profile.yaml` | name, tagline, about, contacts, footer links, meta tags |
+| `skills.yaml` | skill groups (sorted by `order`) |
+| `experience.yaml` | jobs (sorted by `start`, `YYYY-MM`, newest first) |
+| `education.yaml` | education (sorted by `order`) |
+| `projects.yaml` | project cards (sorted by `order`) |
+
+Wrap text in `**double asterisks**` to highlight it in the accent color
+(supported in `tagline`, `about`, and bullets). Use `>-` block scalars for
+long strings, and never start a plain YAML value with `*`.
+
+## Case studies
+
+Add `src/content/case-studies/<anything>.md`:
+
+```markdown
+---
+project: mangahub   # an id from projects.yaml
+title: Optional page title
+---
+
+Markdown body…
 ```
 
-Commit the generated `style.css` so the site works on GitHub Pages without a
-build step.
+It is published at `/portfolio/projects/<project id>/`. An unknown project
+id, or two case studies for the same project, fails the build.
+
+## Deploy
+
+Pushing to `main` runs `.github/workflows/deploy.yml`, which builds with
+`withastro/action` and deploys to GitHub Pages (repo Settings → Pages →
+Source: GitHub Actions).
