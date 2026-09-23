@@ -1,0 +1,50 @@
+- id: gpt-at-home
+  name: GPTAtHome
+  order: 1
+  repo: https://github.com/tnphucccc/gpt-at-home
+  summary: >-
+    Built Bigram and full GPT/Transformer architectures from scratch in
+    PyTorch (multi-head attention, positional encodings, layer norm) with
+    comprehensive unit tests.
+  tags:
+    - Python
+    - PyTorch
+    - Transformers
+- id: mangahub
+  name: MangaHub
+  order: 2
+  repo: https://github.com/tnphucccc/mangahub
+  summary: >-
+    Manga-tracking platform in Go exposing five concurrent network servers
+    (HTTP/REST, TCP, UDP, gRPC, WebSocket) with JWT auth, multi-device sync,
+    real-time chat, and a CLI client.
+  tags:
+    - Go
+    - gRPC
+    - WebSocket
+    - JWT
+- id: sol-me
+  name: SolMe
+  order: 3
+  repo: https://github.com/tnphucccc/sol-me
+  badge: 🏆 3rd Prize · Solana Consumer Hack 16
+  summary: >-
+    Telegram crypto-wallet assistant that simplifies the crypto transaction
+    process, built end-to-end in TypeScript under hackathon constraints.
+  tags:
+    - TypeScript
+    - Solana
+    - Telegram
+- id: lib-man
+  name: LibMan
+  order: 4
+  repo: https://github.com/tnphucccc/lib-man
+  summary: >-
+    Led an 8-person team (157 commits) building a full-stack library
+    management system in Java Spring Boot + React/TypeScript; designed RESTful
+    APIs and managed frontend state with Hooks.
+  tags:
+    - Java
+    - Spring Boot
+    - React
+    - TypeScript

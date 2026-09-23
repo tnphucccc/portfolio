@@ -1,0 +1,52 @@
+- id: metacraft-se
+  title: Software Engineer
+  org: Metacraft Studio · Under Realm TCG · Ho Chi Minh City
+  period: Jan 2025 – Present
+  start: '2025-01'
+  bullets:
+    - >-
+      Built the authoritative multiplayer duel server in **Rust** (Tokio +
+      Axum) using a per-room actor pattern, with real-time state
+      synchronization that reconnects clients from stale views mid-duel.
+    - >-
+      Built the **PvE bot system** — concurrency-safe bot matchmaking and
+      scheduled duel orchestration, with a decision engine scoring skill
+      targeting and tiered deck selection.
+    - >-
+      Architected the in-game economy — multi-currency store, inventory, and a
+      CDN asset pipeline — on **GraphQL** and **MongoDB**, improving query
+      performance **30%** with aggregation-based loaders.
+    - >-
+      Designed and shipped **AWS CDK** infrastructure (Lambda, EC2, CloudWatch
+      analytics pipeline) and server-to-server IAP receipt verification for iOS
+      and Android.
+    - >-
+      Lead code reviews with **AI-assisted tooling** — triaging diffs and
+      validating AI-generated code — enforcing idiomatic Rust/TypeScript
+      patterns, security hygiene, and API reliability.
+- id: metacraft-intern
+  title: Software Engineer Intern
+  org: Metacraft Studio · Under Realm TCG · Ho Chi Minh City
+  period: Sep – Dec 2024
+  start: '2024-09'
+  bullets:
+    - >-
+      Designed and shipped the **quest system** end-to-end — MongoDB data
+      models and GraphQL APIs in TypeScript/Node.js — with progress tracking
+      across daily, weekly, and all-time quests.
+    - >-
+      Built an interactive **CLI** for quest authoring and a duel-tracking
+      pipeline with scheduled match resets, supporting PvE and matchmaking.
+- id: iu-ta
+  title: Teaching Assistant — DSA & OOP
+  org: International University – VNUHCM · Ho Chi Minh City
+  period: Sep 2023 – Jan 2026
+  start: '2023-09'
+  bullets:
+    - >-
+      Evaluated code submissions across DSA and OOP courses — assessing
+      correctness, time/space complexity, and idiomatic quality; gave
+      structured written feedback on assignments and exams.
+    - >-
+      Mentored students on algorithm design, clean code principles, and design
+      patterns through workshops and 1-on-1 guidance.

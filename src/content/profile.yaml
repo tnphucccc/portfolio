@@ -1,0 +1,40 @@
+- id: me
+  name: Phuc Tran Nguyen
+  role: Software Engineer
+  tagline: >-
+    Building across the stack — from **ML** and **backend systems** to
+    **web apps**.
+  location: Ho Chi Minh City, Vietnam
+  about: >-
+    Software Engineer working across backend systems, infrastructure, and
+    ML — currently building game-server infrastructure for **Under Realm TCG**
+    at **Metacraft Studio**. I work **AI-first**, using AI-assisted coding
+    tools daily and reviewing AI-generated code in production. Open to
+    full-time software engineering roles.
+  meta:
+    description: >-
+      Phuc Tran Nguyen — Software Engineer building across the stack, from ML
+      and backend systems to web apps. Based in Ho Chi Minh City, Vietnam.
+    ogDescription: >-
+      Software Engineer building across the stack — from ML and backend
+      systems to web apps.
+  contacts:
+    - kind: email
+      label: Email
+      href: mailto:tnphuc.personal@gmail.com
+    - kind: phone
+      label: (+84) 90 197-6650
+      href: tel:+84901976650
+    - kind: linkedin
+      label: LinkedIn
+      href: https://www.linkedin.com/in/phuc-tran-hcmiu/
+    - kind: github
+      label: GitHub
+      href: https://github.com/tnphucccc
+  footerLinks:
+    - label: tnphuc.personal@gmail.com
+      href: mailto:tnphuc.personal@gmail.com
+    - label: github.com/tnphucccc
+      href: https://github.com/tnphucccc
+    - label: LinkedIn
+      href: https://www.linkedin.com/in/phuc-tran-hcmiu/

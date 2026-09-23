@@ -1,0 +1,43 @@
+- id: languages
+  label: Languages
+  order: 1
+  items:
+    - Go
+    - Rust
+    - Python
+    - TypeScript / JavaScript
+    - Java
+    - C++
+- id: backend-infra
+  label: Backend & Infra
+  order: 2
+  items:
+    - GraphQL
+    - REST
+    - gRPC
+    - AWS (CDK, Lambda, EC2)
+    - Docker
+    - MongoDB
+    - Redis
+- id: cs-fundamentals
+  label: CS Fundamentals
+  order: 3
+  items:
+    - Data Structures & Algorithms
+    - Complexity Analysis
+    - Design Patterns
+    - Concurrency
+- id: ai-ml
+  label: AI / ML
+  order: 4
+  items:
+    - PyTorch (GPT / Transformer)
+    - scikit-learn
+    - ML pipeline design
+- id: ai-assisted-dev
+  label: AI-Assisted Dev
+  order: 5
+  items:
+    - Claude Code
+    - GitHub Copilot
+    - Reviewing AI-generated code
