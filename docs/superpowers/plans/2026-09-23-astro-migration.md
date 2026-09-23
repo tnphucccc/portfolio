@@ -18,6 +18,7 @@
 - `site: 'https://tnphucccc.github.io'`, `base: '/portfolio'`.
 - Package manager: pnpm, pinned with `"packageManager": "pnpm@11.22.0"`. Commit `pnpm-lock.yaml`.
 - Scratch directory (comparison script, old HTML, screenshots — never committed): `/tmp/claude-1000/-home-tnphuc-Workspace/f01c3218-b242-46e8-8ef3-5b4466ca9400/scratchpad`, written as `$SCRATCH` below. Shell variables do not persist between steps, so start any step that uses it with `SCRATCH=/tmp/claude-1000/-home-tnphuc-Workspace/f01c3218-b242-46e8-8ef3-5b4466ca9400/scratchpad`.
+- Execution mode: Native (chosen by an ECC council, 4/4). The source of truth for every review is the **old page** (`git show main:index.html`) and the live site, not this plan. Keep `$SCRATCH/progress.md` updated after each task (done tasks, commit SHAs, gotchas, surprises) and re-read it after any context compaction.
 - Astro's `file()` loader only *logs* YAML parse errors, missing files, and id-less items — the build still succeeds (`astro@7.3.4` `dist/content/loaders/file.js:36-42`). The content guard test (Task 3) and `pnpm build` running tests first are what make such input fail.
 - `typescript` must be `^6` — `@astrojs/check@0.9.10` peers on `^5 || ^6`; TypeScript 7 breaks it.
 - Every commit message ends with a blank line and `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
@@ -1343,7 +1344,21 @@ node "$SCRATCH/compare.mjs" "$SCRATCH/old.html" dist/index.html
 ```
 Expected: all 14 lines `ok`, exit 0. Fix any `FAIL` in the YAML/components (never by editing the old file) and re-run until clean.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 8: Prove the comparison script can fail**
+
+A check that has never failed proves nothing. Mutate copies of the built page (never the source) and confirm each mutation is caught:
+```bash
+SCRATCH=/tmp/claude-1000/-home-tnphuc-Workspace/f01c3218-b242-46e8-8ef3-5b4466ca9400/scratchpad
+sed '0,/class="tag"/s//class="tagx"/' dist/index.html > "$SCRATCH/mut-class.html"
+sed '0,/href="https:\/\/github.com\/tnphucccc\/mangahub"/s//href="https:\/\/github.com\/tnphucccc\/mangahubx"/' dist/index.html > "$SCRATCH/mut-href.html"
+sed '0,/<\/span> and/s//<\/span>and/' dist/index.html > "$SCRATCH/mut-space.html"
+for m in class href space; do
+  node "$SCRATCH/compare.mjs" "$SCRATCH/old.html" "$SCRATCH/mut-$m.html" > /dev/null; echo "$m exit=$?"
+done
+```
+Expected: `class exit=1`, `href exit=1`, `space exit=1`. If any prints `exit=0`, fix `compare.mjs` before continuing.
+
+- [ ] **Step 9: Commit**
 
 ```bash
 git add src
@@ -1351,6 +1366,10 @@ git commit -m "feat: render home page from content collections
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ```
+
+- [ ] **Step 10: Checkpoint review (fresh reviewer)**
+
+Dispatch one fresh reviewer agent (read-only) with **only**: the spec path, `git diff main..HEAD -- . ':!docs'`, the old page (`git show main:index.html`), and the live URL. Not the plan. Ask it to find any way the new page differs from the old one, or any structural problem Tasks 5–7 would build on. Fix confirmed findings (re-run Steps 7–8), commit, and note them in `$SCRATCH/progress.md` before Task 5.
 
 ---
 
@@ -1517,26 +1536,68 @@ Expected: build and tests pass; prints `no case-study pages`.
 
 Run `pnpm build && pnpm preview` in the background; confirm `http://localhost:4321/portfolio/` responds 200.
 
-- [ ] **Step 2: Capture four full-page screenshots**
+- [ ] **Step 2: Capture six full-page screenshots**
 
-With the chrome-devtools MCP tools (`new_page`, `resize_page`, `take_screenshot` with `fullPage: true`), save to `$SCRATCH`:
-- `live-1280.png` — live URL at 1280×900
-- `new-1280.png` — preview URL at 1280×900
-- `live-375.png` — live URL at 375×812
-- `new-375.png` — preview URL at 375×812
+With the chrome-devtools MCP tools (`new_page`, `resize_page`, `take_screenshot` with `fullPage: true`, `format: png`), save to `$SCRATCH`:
+- `live-1280.png` / `new-1280.png` — 1280×900
+- `live-768.png` / `new-768.png` — 768×1024 (just above the `sm` breakpoint)
+- `live-375.png` / `new-375.png` — 375×812
 
-Before each capture, `wait_for` the text "Phuc Tran Nguyen", then `evaluate_script` `async () => { await document.fonts.ready; }`.
+`live-*` is `https://tnphucccc.github.io/portfolio/`, `new-*` is `http://localhost:4321/portfolio/`. Use the same browser for both. Before each capture, `wait_for` the text "Phuc Tran Nguyen", then `evaluate_script` `async () => { await document.fonts.ready; }`.
 
-- [ ] **Step 3: Compare side by side**
+- [ ] **Step 3: Pixel-diff each pair**
 
-View each pair. Check in order: fonts, colors, section spacing, tag pill corners, card borders, bullet markers, header blur/border, footer layout, nav hidden at 375px.
-Then check interactively on the preview: press Tab once → "Skip to content" appears top-left in accent on a surface background; hover a project card → border turns accent; hover a nav link → accent.
+Set up the differ once (in `$SCRATCH`, not the repo):
+```bash
+SCRATCH=/tmp/claude-1000/-home-tnphuc-Workspace/f01c3218-b242-46e8-8ef3-5b4466ca9400/scratchpad
+cd "$SCRATCH" && npm init -y >/dev/null && npm i pixelmatch@^7 pngjs@^7 >/dev/null
+```
 
-- [ ] **Step 4: Fix differences**
+`$SCRATCH/diff.mjs`:
+```js
+// usage: node diff.mjs a.png b.png out.png
+import { readFileSync, writeFileSync } from 'node:fs';
+import { PNG } from 'pngjs';
+import pixelmatch from 'pixelmatch';
 
-For each difference, change the smallest thing that restores the live look, rebuild, and re-capture that pair. Record every difference found and its fix (or why it is acceptable) for the final report.
+const [a, b, out] = process.argv.slice(2);
+const A = PNG.sync.read(readFileSync(a));
+const B = PNG.sync.read(readFileSync(b));
+const sizeOk = A.width === B.width && A.height === B.height;
+if (!sizeOk) console.log(`SIZE DIFF ${A.width}x${A.height} vs ${B.width}x${B.height}`);
 
-- [ ] **Step 5: Commit (only if files changed)**
+const w = Math.min(A.width, B.width);
+const h = Math.min(A.height, B.height);
+const crop = (img) => {
+  const c = new PNG({ width: w, height: h });
+  PNG.bitblt(img, c, 0, 0, w, h, 0, 0);
+  return c;
+};
+const diff = new PNG({ width: w, height: h });
+const n = pixelmatch(crop(A).data, crop(B).data, diff.data, w, h, { threshold: 0.1 });
+writeFileSync(out, PNG.sync.write(diff));
+const pct = (n / (w * h)) * 100;
+console.log(`${pct.toFixed(3)}% of pixels differ (${n})`);
+process.exit(sizeOk && pct <= 0.1 ? 0 : 1);
+```
+
+Run for each width:
+```bash
+for w in 1280 768 375; do
+  node "$SCRATCH/diff.mjs" "$SCRATCH/live-$w.png" "$SCRATCH/new-$w.png" "$SCRATCH/diff-$w.png"; echo "$w exit=$?"
+done
+```
+Expected: same size and ≤ 0.1% differing pixels at every width (anti-aliasing noise only). Look at every `diff-*.png` regardless — red pixels show exactly where something moved.
+
+- [ ] **Step 4: Check interactive states**
+
+On both live and preview at 1280px: press Tab once → "Skip to content" appears top-left in accent on a surface background; hover a project card → border turns accent; hover a nav link → accent. Screenshot each state on both sites and compare.
+
+- [ ] **Step 5: Fix differences**
+
+For each difference, change the smallest thing that restores the live look, rebuild, and re-capture and re-diff that pair. Record every difference found and its fix (or why it is acceptable) in `$SCRATCH/progress.md` for the final report.
+
+- [ ] **Step 6: Commit (only if files changed)**
 
 ```bash
 git add src
@@ -1684,9 +1745,13 @@ git commit -m "ci: deploy with GitHub Actions; remove static page; update README
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ```
 
-- [ ] **Step 5: Hand off — ask before anything outward-facing**
+- [ ] **Step 5: Final whole-branch review (fresh reviewer, most capable model)**
 
-Report results (tests, check, comparison, screenshot findings) and ask the user to approve, in this order:
+Dispatch one fresh reviewer agent with **only**: the spec path, `git diff main..HEAD`, the old page (`git show main:index.html`), the live URL, and the instruction to run `pnpm install && pnpm build && pnpm preview` and do **its own** screenshot comparison against the live site rather than trusting `$SCRATCH` notes. Not the plan. Fix confirmed findings, re-run Step 3, commit.
+
+- [ ] **Step 6: Hand off — ask before anything outward-facing**
+
+Report results (tests, check, comparison, pixel diffs, both reviews) and ask the user to approve, in this order:
 1. Push `astro-migration` and open a PR.
 2. Switch the Pages source to GitHub Actions: `gh api -X PUT repos/tnphucccc/portfolio/pages -f build_type=workflow`. This must happen **before** merging — otherwise the legacy branch build would publish `main` without an `index.html`. The current deployment keeps serving until the next workflow deploy.
 3. Merge; watch the `Deploy to GitHub Pages` run; confirm the live URL renders and matches `new-1280.png`.
