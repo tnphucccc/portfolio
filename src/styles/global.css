@@ -101,4 +101,32 @@
     content: '▸';
     @apply absolute left-0 text-accent;
   }
+  /* Rendered Markdown on case-study pages (preflight strips defaults) */
+  .case-body {
+    @apply max-w-3xl space-y-5 leading-relaxed text-muted;
+  }
+  .case-body h2 {
+    @apply pt-4 font-mono text-sm font-medium tracking-widest text-accent;
+  }
+  .case-body h3 {
+    @apply pt-2 text-lg font-semibold text-text;
+  }
+  .case-body a {
+    @apply text-accent underline underline-offset-4;
+  }
+  .case-body ul {
+    @apply list-disc space-y-2 pl-5;
+  }
+  .case-body ol {
+    @apply list-decimal space-y-2 pl-5;
+  }
+  .case-body code {
+    @apply rounded bg-surface-2 px-1.5 py-0.5 font-mono text-sm text-text;
+  }
+  .case-body pre {
+    @apply overflow-x-auto rounded-xl border border-line bg-surface p-4;
+  }
+  .case-body pre code {
+    @apply bg-transparent p-0;
+  }
 }

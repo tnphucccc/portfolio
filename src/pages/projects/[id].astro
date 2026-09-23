@@ -1,0 +1,43 @@
+---
+import { getCollection, getEntry, render, type CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+export async function getStaticPaths() {
+  const studies = await getCollection('caseStudies');
+  const seen = new Map<string, string>();
+  for (const study of studies) {
+    const projectId = study.data.project.id;
+    const other = seen.get(projectId);
+    if (other) {
+      throw new Error(
+        `Case studies "${other}" and "${study.id}" both reference project "${projectId}"; keep one.`,
+      );
+    }
+    seen.set(projectId, study.id);
+  }
+  return studies.map((study) => ({ params: { id: study.data.project.id }, props: { study } }));
+}
+
+interface Props {
+  study: CollectionEntry<'caseStudies'>;
+}
+const { study } = Astro.props;
+
+const project = await getEntry(study.data.project);
+if (!project) {
+  throw new Error(
+    `Case study "${study.id}" references unknown project "${study.data.project.id}"; add it to src/content/projects.yaml or fix the id.`,
+  );
+}
+const { Content } = await render(study);
+---
+
+<Base title={study.data.title ?? project.data.name}>
+  <article class="wrap py-12 sm:py-16">
+    <ProjectCard project={project.data} />
+    <div class="case-body mt-10">
+      <Content />
+    </div>
+  </article>
+</Base>
