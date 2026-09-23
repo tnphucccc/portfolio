@@ -14,7 +14,7 @@ const icons = { email: 'mail', phone: 'phone', linkedin: 'linkedin', github: 'gi
 
 <section class="wrap pb-12 pt-16 sm:pb-16 sm:pt-24" aria-labelledby="hero-name">
   <p class="mb-4 font-mono text-sm tracking-widest text-accent">// {profile.role.toLowerCase()}</p>
-  <h1 id="hero-name" class="text-4xl font-bold leading-tight tracking-tight sm:text-6xl">
+  <h1 id="hero-name" class="text-4xl font-bold leading-tight tracking-tight sm:text-6xl/none">
     {profile.name}
   </h1>
   <p class="mt-5 max-w-xl text-lg leading-relaxed text-muted" set:html={renderInline(profile.tagline)} />
