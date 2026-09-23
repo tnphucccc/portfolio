@@ -6,7 +6,7 @@
 
 **Architecture:** Content lives in `src/content/*.yaml` (Astro `file()` loader, Zod schemas) plus `src/content/case-studies/*.md` (`glob()` loader). Small Astro components render it; `Base.astro` owns `<head>`, icon sprite, header, and footer. Inline `**x**` highlights are rendered by a unit-tested, escape-first helper. GitHub Actions builds and deploys to Pages under `/portfolio`.
 
-**Tech Stack:** Astro ^7.3, Tailwind CSS ^4.3 via `@tailwindcss/vite`, TypeScript ^6 (the range `@astrojs/check` supports), Vitest ^5, pnpm, Node ≥ 22.12 (local: 24).
+**Tech Stack:** Astro ^7.3, Tailwind CSS ^4.3 via `@tailwindcss/vite`, TypeScript ^6 (the range `@astrojs/check` supports), Vitest ^5, js-yaml ^4, pnpm 11.22.0, Node ≥ 22.12 (local and CI: 24).
 
 **Spec:** `docs/superpowers/specs/2026-09-23-astro-migration-design.md`
 
@@ -16,15 +16,17 @@
 - No content changes: every visible string, link, attribute value, and section order matches `git show main:index.html` exactly (the phone number stays).
 - No visual redesign; the live site `https://tnphucccc.github.io/portfolio/` is the reference.
 - `site: 'https://tnphucccc.github.io'`, `base: '/portfolio'`.
-- Package manager: pnpm. Commit `pnpm-lock.yaml`.
+- Package manager: pnpm, pinned with `"packageManager": "pnpm@11.22.0"`. Commit `pnpm-lock.yaml`.
+- Scratch directory (comparison script, old HTML, screenshots — never committed): `/tmp/claude-1000/-home-tnphuc-Workspace/f01c3218-b242-46e8-8ef3-5b4466ca9400/scratchpad`, written as `$SCRATCH` below. Shell variables do not persist between steps, so start any step that uses it with `SCRATCH=/tmp/claude-1000/-home-tnphuc-Workspace/f01c3218-b242-46e8-8ef3-5b4466ca9400/scratchpad`.
+- Astro's `file()` loader only *logs* YAML parse errors, missing files, and id-less items — the build still succeeds (`astro@7.3.4` `dist/content/loaders/file.js:36-42`). The content guard test (Task 3) and `pnpm build` running tests first are what make such input fail.
 - `typescript` must be `^6` — `@astrojs/check@0.9.10` peers on `^5 || ^6`; TypeScript 7 breaks it.
 - Every commit message ends with a blank line and `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
 - Do not push, open a PR, or change the repository's Pages settings without the user's explicit approval (Task 7 ends by asking).
 
 ## Review Focus
 
-1. A YAML value starting with `*` (e.g. a bullet that opens with `**Rust**`) is parsed as an alias, and one containing `: ` as a mapping → the build must fail loudly, never render a wrong value. All multi-word strings in this plan use `>-` block scalars or safe plain scalars; Task 3 Step 6 proves a malformed file fails `astro sync`.
-2. A contact/footer `href` without a scheme (e.g. `github.com/tnphucccc`) would become a broken relative link under `/portfolio/` → the schema rejects anything not starting with `https://`, `mailto:`, or `tel:`. Task 3 Step 6 tests it.
+1. A YAML value starting with `*` (e.g. a bullet that opens with `**Rust**`) is an undefined alias → Astro logs and *continues*, so the section silently disappears (CI) or shows stale data (local cache). Expected: `pnpm build` fails. The content guard test catches it; Task 3 Step 9 proves it. (A value containing `: ` becomes a mapping, which the Zod schema rejects.)
+2. A contact/footer `href` without a scheme (e.g. `github.com/tnphucccc`) would become a broken relative link under `/portfolio/` → the schema rejects anything not starting with `https://`, `mailto:`, or `tel:`. Task 3 Step 9 tests it.
 3. A case study whose `project:` names a nonexistent project → build fails with a message naming the file. Task 5 Step 5 tests it.
 4. Two case studies referencing the same project would silently produce one route and drop the other → `getStaticPaths` throws. Task 5 Step 6 tests it.
 5. Header nav on a case-study page must point to `/portfolio/#about`, not `#about` (which would resolve against `/portfolio/projects/<id>/`). Task 5 Step 4 checks the built HTML.
@@ -42,7 +44,7 @@
 | `src/styles/global.css` | Tailwind v4 entry, `@theme` tokens, base + component classes (port of `src/input.css` + `tailwind.config.js`) |
 | `src/lib/inline.ts` | `escapeHtml`, `renderInline` |
 | `src/lib/url.ts` | `withBase`, `isExternal` |
-| `src/lib/content.ts` | typed collection getters with explicit sorting |
+| `src/lib/content.ts` | typed collection getters with explicit sorting; throw on empty collections |
 | `src/content.config.ts` | collections + schemas |
 | `src/content/{profile,skills,experience,education,projects}.yaml` | all page content |
 | `src/content/case-studies/.gitkeep` | keeps the (empty) glob directory in git |
@@ -51,11 +53,12 @@
 | `src/pages/index.astro` | home page |
 | `src/pages/projects/[id].astro` | case-study route |
 | `tests/{inline,url}.test.ts` | unit tests |
+| `tests/content.test.ts` | YAML guard: every content file parses to a non-empty array with unique string ids |
 | `.github/workflows/deploy.yml` | CI deploy |
 | `README.md` | updated docs |
 | Deleted: `index.html`, `style.css`, `tailwind.config.js`, `src/input.css` | |
 
-Scratch files (comparison script, old HTML, screenshots) go in the session scratchpad, referred to below as `$SCRATCH`, never in the repo.
+Scratch files (comparison script, old HTML, screenshots) go in `$SCRATCH` (see Global Constraints), never in the repo.
 
 ---
 
@@ -78,15 +81,21 @@ Scratch files (comparison script, old HTML, screenshots) go in the session scrat
   "description": "Personal portfolio for Phuc Tran Nguyen",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": ">=22.12"
+  },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "build": "vitest run --passWithNoTests && astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "vitest run"
+    "test": "vitest run --passWithNoTests"
   }
 }
 ```
+
+`build` runs the unit tests first so that the YAML guard (Task 3) fails CI too; `--passWithNoTests` only matters until Task 2 adds the first test.
 
 - [ ] **Step 2: Install dependencies**
 
@@ -136,6 +145,9 @@ Append after the `dist/` block:
 
 ```css
 @import 'tailwindcss';
+
+/* The plan/spec docs are full of class names; don't generate CSS for them. */
+@source not "../../docs";
 
 @theme {
   --color-bg: #0d1117;
@@ -238,7 +250,7 @@ Append after the `dist/` block:
 }
 ```
 
-v3 → v4 differences that could show (verified visually in Task 6, not changed pre-emptively): `space-y-*` now sets `margin-bottom` on all-but-last children instead of `margin-top` on all-but-first (same visual result); hover styles only apply on devices that support hover; the default border color is `currentColor` (every border here sets `border-line`).
+v3 → v4 differences that could show (verified visually in Task 6, not changed pre-emptively): `space-y-*` now sets `margin-bottom` on all-but-last children instead of `margin-top` on all-but-first (same visual result); hover styles only apply on devices that support hover; the default border color is `currentColor` (every border here sets `border-line`). **Do not rename** bare `rounded` or `backdrop-blur` (used by `.tag`, the skip link, and the header): per the v4 upgrade guide the bare versions keep their v3 values; only the `-sm` variants changed, and this site uses none.
 
 - [ ] **Step 7: Create placeholder `src/pages/index.astro`**
 
@@ -258,7 +270,7 @@ git rm -q tailwind.config.js src/input.css
 pnpm build
 grep -rlo -- '--color-accent:#34d399' dist | head -1
 ```
-Expected: `astro check` reports 0 errors, build writes `dist/index.html`, grep prints one file (CSS may be inlined in the HTML or emitted under `dist/_astro/`).
+Expected: `astro check` reports 0 errors, build writes `dist/index.html`, grep prints one file (CSS may be inlined in the HTML or emitted under `dist/_astro/`). If `astro check` says `tailwindcss()` is not assignable to `PluginOption`, two Vite copies are installed — run `pnpm why vite` and align versions rather than suppressing the error.
 
 - [ ] **Step 9: Commit**
 
@@ -438,17 +450,62 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ### Task 3: Content collections
 
 **Files:**
-- Create: `src/content.config.ts`, `src/content/profile.yaml`, `src/content/skills.yaml`, `src/content/experience.yaml`, `src/content/education.yaml`, `src/content/projects.yaml`, `src/content/case-studies/.gitkeep`, `src/lib/content.ts`
+- Create: `tests/content.test.ts`, `src/content.config.ts`, `src/content/profile.yaml`, `src/content/skills.yaml`, `src/content/experience.yaml`, `src/content/education.yaml`, `src/content/projects.yaml`, `src/content/case-studies/.gitkeep`, `src/lib/content.ts`
+- Modify: `package.json` (dev deps `js-yaml`, `@types/js-yaml`)
 
 **Interfaces:**
-- Produces collections `profile`, `skills`, `experience`, `education`, `projects`, `caseStudies` and, in `src/lib/content.ts`:
+- Produces collections `profile`, `skills`, `experience`, `education`, `projects`, `caseStudies` and, in `src/lib/content.ts` (every getter throws if its collection is empty):
   - `getProfile(): Promise<CollectionEntry<'profile'>['data']>` (throws if `me` missing)
   - `getSkills(): Promise<CollectionEntry<'skills'>[]>` — by `order` asc
   - `getExperience(): Promise<CollectionEntry<'experience'>[]>` — by `start` desc
   - `getEducation(): Promise<CollectionEntry<'education'>[]>` — by `order` asc
   - `getProjects(): Promise<CollectionEntry<'projects'>[]>` — by `order` asc
 
-- [ ] **Step 1: Create `src/content.config.ts`**
+- [ ] **Step 1: Install js-yaml and write the failing guard test `tests/content.test.ts`**
+
+Run: `pnpm add -D js-yaml@^4 @types/js-yaml` (the same parser, same major version, that Astro's `file()` loader uses).
+
+```ts
+import { readdirSync, readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { load } from 'js-yaml';
+import { describe, expect, it } from 'vitest';
+
+// Astro's file() loader only logs YAML parse errors and id-less items, and the
+// build still succeeds. This test is what makes such content fail `pnpm build`.
+const dir = fileURLToPath(new URL('../src/content/', import.meta.url));
+const files = readdirSync(dir)
+  .filter((f) => f.endsWith('.yaml'))
+  .sort();
+
+describe('content YAML', () => {
+  it('has the five collection files', () => {
+    expect(files).toEqual([
+      'education.yaml',
+      'experience.yaml',
+      'profile.yaml',
+      'projects.yaml',
+      'skills.yaml',
+    ]);
+  });
+
+  it.each(files)('%s is a non-empty array of items with unique string ids', (file) => {
+    const data = load(readFileSync(`${dir}${file}`, 'utf8'));
+    expect(Array.isArray(data)).toBe(true);
+    const ids = (data as Array<{ id?: unknown }>).map((item) => item.id);
+    expect(ids.length).toBeGreaterThan(0);
+    for (const id of ids) expect(typeof id).toBe('string');
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+});
+```
+
+- [ ] **Step 2: Run it to verify it fails**
+
+Run: `pnpm test`
+Expected: FAIL — `tests/content.test.ts` errors with `ENOENT … src/content/` (the directory doesn't exist yet); the 14 Task 2 tests still pass.
+
+- [ ] **Step 3: Create `src/content.config.ts`**
 
 ```ts
 import { defineCollection, reference } from 'astro:content';
@@ -524,7 +581,7 @@ const projects = defineCollection({
     name: z.string(),
     summary: z.string(),
     tags: z.array(z.string().min(1)),
-    repo: z.url(),
+    repo: z.string().regex(/^https:\/\//, 'repo must be an https:// URL'),
     badge: z.string().optional(),
     order: z.number().int(),
   }),
@@ -543,7 +600,7 @@ export const collections = { profile, skills, experience, education, projects, c
 
 Note: `education` deliberately has `order` instead of `start` — the start date isn't on the current site and must not be invented.
 
-- [ ] **Step 2: Create `src/content/profile.yaml`** (text copied verbatim from `index.html`; `<span class="hl">x</span>` → `**x**`)
+- [ ] **Step 4: Create `src/content/profile.yaml`** (text copied verbatim from `index.html`; `<span class="hl">x</span>` → `**x**`)
 
 ```yaml
 - id: me
@@ -588,7 +645,7 @@ Note: `education` deliberately has `order` instead of `start` — the start date
       href: https://www.linkedin.com/in/phuc-tran-hcmiu/
 ```
 
-- [ ] **Step 3: Create `src/content/skills.yaml`**
+- [ ] **Step 5: Create `src/content/skills.yaml`**
 
 ```yaml
 - id: languages
@@ -636,7 +693,7 @@ Note: `education` deliberately has `order` instead of `start` — the start date
     - Reviewing AI-generated code
 ```
 
-- [ ] **Step 4: Create `src/content/experience.yaml` and `src/content/education.yaml`**
+- [ ] **Step 6: Create `src/content/experience.yaml` and `src/content/education.yaml`**
 
 `src/content/experience.yaml`:
 ```yaml
@@ -708,7 +765,7 @@ Note: `education` deliberately has `order` instead of `start` — the start date
     - Member of CSE Youth Union · Member of IoTs Club.
 ```
 
-- [ ] **Step 5: Create `src/content/projects.yaml`, the case-studies dir, and `src/lib/content.ts`**
+- [ ] **Step 7: Create `src/content/projects.yaml`, the case-studies dir, and `src/lib/content.ts`**
 
 `src/content/projects.yaml`:
 ```yaml
@@ -773,6 +830,15 @@ import { getCollection, getEntry } from 'astro:content';
 const byOrder = (a: { data: { order: number } }, b: { data: { order: number } }) =>
   a.data.order - b.data.order;
 
+// Astro's file() loader only logs YAML errors; an empty collection here means
+// the file failed to load, so fail loudly instead of rendering an empty section.
+function nonEmpty<T>(entries: T[], name: string): T[] {
+  if (entries.length === 0) {
+    throw new Error(`Collection "${name}" is empty; check src/content/${name}.yaml`);
+  }
+  return entries;
+}
+
 export async function getProfile() {
   const entry = await getEntry('profile', 'me');
   if (!entry) throw new Error('src/content/profile.yaml must contain an entry with id "me"');
@@ -780,54 +846,58 @@ export async function getProfile() {
 }
 
 export async function getSkills() {
-  return (await getCollection('skills')).sort(byOrder);
+  return nonEmpty(await getCollection('skills'), 'skills').sort(byOrder);
 }
 
 /** Newest first. */
 export async function getExperience() {
-  return (await getCollection('experience')).sort((a, b) =>
+  return nonEmpty(await getCollection('experience'), 'experience').sort((a, b) =>
     b.data.start.localeCompare(a.data.start),
   );
 }
 
 export async function getEducation() {
-  return (await getCollection('education')).sort(byOrder);
+  return nonEmpty(await getCollection('education'), 'education').sort(byOrder);
 }
 
 export async function getProjects() {
-  return (await getCollection('projects')).sort(byOrder);
+  return nonEmpty(await getCollection('projects'), 'projects').sort(byOrder);
 }
 ```
 
-- [ ] **Step 6: Validate, including the failure modes (Review Focus 1 & 2)**
+- [ ] **Step 8: Run the tests to verify they pass**
 
-Run: `pnpm astro sync`
-Expected: succeeds (an "empty collection caseStudies" warning is fine).
+Run: `pnpm test`
+Expected: PASS — 3 files, 20 tests (14 from Task 2, plus 1 + 5 in `content.test.ts`).
 
-Then prove bad input fails, reverting each with the reverse `sed` (the files are untracked, so `git checkout` cannot restore them):
+- [ ] **Step 9: Validate, including the failure modes (Review Focus 1 & 2)**
+
+Run: `pnpm build`
+Expected: succeeds (an "empty collection caseStudies" warning is fine; the page is still the Task 1 placeholder).
+
+Then prove bad input fails `pnpm build`, reverting each with the reverse `sed` (the files are untracked, so `git checkout` cannot restore them):
 ```bash
-# (1) A YAML value opening with ** is parsed as an alias → must fail
+# (1) A YAML value opening with ** is an undefined alias. Astro alone would only
+#     log it; the guard test must fail the build.
 sed -i 's/^    - GPA 3.1 · IELTS 6.5$/    - **GPA** 3.1/' src/content/education.yaml
-pnpm astro sync; echo "exit=$?"   # expect non-zero, YAML error naming education.yaml
+pnpm build; echo "exit=$?"   # expect non-zero: content.test.ts fails on education.yaml
 sed -i 's/^    - \*\*GPA\*\* 3.1$/    - GPA 3.1 · IELTS 6.5/' src/content/education.yaml
 
-# (2) A scheme-less href → must fail the schema
+# (2) A scheme-less href must fail the schema
 sed -i 's#href: https://github.com/tnphucccc$#href: github.com/tnphucccc#' src/content/profile.yaml
-pnpm astro sync; echo "exit=$?"   # expect non-zero, "href must start with https://, mailto:, or tel:"
+pnpm build; echo "exit=$?"   # expect non-zero, "href must start with https://, mailto:, or tel:"
 sed -i 's#href: github.com/tnphucccc$#href: https://github.com/tnphucccc#' src/content/profile.yaml
 
 # Confirm both files are restored
 grep -c 'GPA 3.1 · IELTS 6.5' src/content/education.yaml            # expect 1
 grep -c 'https://github.com/tnphucccc$' src/content/profile.yaml   # expect 2
-pnpm astro sync                                                     # expect success
+pnpm build                                                          # expect success
 ```
-If `astro sync` does **not** fail on (1), stop and report — the YAML convention in this plan would then need a different guard.
 
-- [ ] **Step 7: Type-check and commit**
+- [ ] **Step 10: Commit**
 
-Run: `pnpm check` — expected 0 errors.
 ```bash
-git add src/content.config.ts src/content src/lib/content.ts
+git add package.json pnpm-lock.yaml tests/content.test.ts src/content.config.ts src/content src/lib/content.ts
 git commit -m "feat: move page content into validated YAML collections
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
@@ -1191,16 +1261,16 @@ const [profile, skills, experience, projects, education] = await Promise.all([
   </Section>
 
   <Section id="education" title="education">
-    <div class="space-y-10">
-      {
-        education.map(({ data }) => (
-          <Entry title={data.title} period={data.period} org={data.org} bullets={data.bullets} />
-        ))
-      }
-    </div>
+    {
+      education.map(({ data }) => (
+        <Entry title={data.title} period={data.period} org={data.org} bullets={data.bullets} />
+      ))
+    }
   </Section>
 </Base>
 ```
+
+(Education deliberately has no `space-y-10` wrapper — the current page has none.)
 
 - [ ] **Step 7: Build and compare against the old page**
 
@@ -1223,11 +1293,19 @@ const text = (h) =>
     body(h)
       .replace(/<svg[\s\S]*?<\/svg>/g, ' ')
       .replace(/<!--[\s\S]*?-->/g, ' ')
+      // Inline spans vanish without a space, so "ML</span>and" ≠ "ML and".
+      .replace(/<\/?span[^>]*>/g, '')
       .replace(/<[^>]+>/g, ' '),
   ).replace(/\s+/g, ' ').trim();
 const attr = (h, name) =>
-  [...h.matchAll(new RegExp(`\\s${name}="([^"]*)"`, 'g'))].map((m) => decode(m[1])).sort();
+  [...h.matchAll(new RegExp(`\\s${name}="([^"]*)"`, 'g'))]
+    .map((m) => decode(m[1]).replace(/\s+/g, ' ').trim())
+    .sort();
 const title = (h) => decode(h.match(/<title>([^<]*)<\/title>/)[1]);
+const lang = (h) => h.match(/<html[^>]*\slang="([^"]*)"/)?.[1];
+// Stylesheet links legitimately differ (style.css vs Astro's bundle).
+const headHrefs = (h) =>
+  attr(head(h), 'href').filter((v) => !v.endsWith('.css') && !v.includes('/_astro/'));
 
 let failed = false;
 const check = (label, a, b) => {
@@ -1245,23 +1323,25 @@ const check = (label, a, b) => {
   }
 };
 
+check('html lang', lang(oldHtml), lang(newHtml));
 check('title', title(oldHtml), title(newHtml));
 check('meta content', attr(head(oldHtml), 'content'), attr(head(newHtml), 'content'));
+check('og property', attr(head(oldHtml), 'property'), attr(head(newHtml), 'property'));
+check('head hrefs', headHrefs(oldHtml), headHrefs(newHtml));
 check('visible text', text(oldHtml), text(newHtml));
-check('body hrefs', attr(body(oldHtml), 'href'), attr(body(newHtml), 'href'));
-check('body ids', attr(body(oldHtml), 'id'), attr(body(newHtml), 'id'));
-check('aria-labels', attr(body(oldHtml), 'aria-label'), attr(body(newHtml), 'aria-label'));
-check('svg path data', attr(body(oldHtml), 'd'), attr(body(newHtml), 'd'));
-check('targets', attr(body(oldHtml), 'target'), attr(body(newHtml), 'target'));
+for (const name of ['href', 'id', 'class', 'rel', 'target', 'aria-label', 'aria-labelledby', 'd']) {
+  check(`body ${name}`, attr(body(oldHtml), name), attr(body(newHtml), name));
+}
 process.exit(failed ? 1 : 0);
 ```
 
 Run:
 ```bash
+SCRATCH=/tmp/claude-1000/-home-tnphuc-Workspace/f01c3218-b242-46e8-8ef3-5b4466ca9400/scratchpad
 git show main:index.html > "$SCRATCH/old.html"
 node "$SCRATCH/compare.mjs" "$SCRATCH/old.html" dist/index.html
 ```
-Expected: all 8 lines `ok`, exit 0. Fix any `FAIL` in the YAML/components (never by editing the old file) and re-run until clean.
+Expected: all 14 lines `ok`, exit 0. Fix any `FAIL` in the YAML/components (never by editing the old file) and re-run until clean.
 
 - [ ] **Step 8: Commit**
 
@@ -1501,6 +1581,8 @@ jobs:
         uses: actions/checkout@v7
       - name: Install, build, and upload
         uses: withastro/action@v6
+        with:
+          node-version: 24
 
   deploy:
     needs: build
@@ -1539,7 +1621,7 @@ Personal portfolio for **Phuc Tran Nguyen**, live at
 pnpm install
 pnpm dev        # http://localhost:4321/portfolio/
 pnpm test       # unit tests
-pnpm build      # type-check + build to dist/
+pnpm build      # unit tests + type-check + build to dist/
 pnpm preview    # serve dist/
 ```
 
@@ -1585,13 +1667,13 @@ Source: GitHub Actions).
 - [ ] **Step 3: Final verification**
 
 ```bash
+SCRATCH=/tmp/claude-1000/-home-tnphuc-Workspace/f01c3218-b242-46e8-8ef3-5b4466ca9400/scratchpad
 pnpm install --frozen-lockfile
-pnpm test
 pnpm build
 node "$SCRATCH/compare.mjs" "$SCRATCH/old.html" dist/index.html
 git status --short
 ```
-Expected: tests pass, 0 check errors, all comparison lines `ok`; `git status` lists only this task's files.
+Expected: 20 tests pass, 0 check errors, all 14 comparison lines `ok`; `git status` lists only this task's files.
 
 - [ ] **Step 4: Commit**
 
