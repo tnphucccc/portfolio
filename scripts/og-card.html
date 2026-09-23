@@ -1,0 +1,72 @@
+<!doctype html>
+<!--
+  Source of public/og.png (the 1200×630 link-preview image). Regenerate after
+  changing your name, role, or tagline — see README "Link preview image".
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+        background: #0d1117;
+        color: #e6edf3;
+        font-family: Inter, sans-serif;
+      }
+      .card {
+        box-sizing: border-box;
+        width: 1200px;
+        height: 630px;
+        padding: 72px 88px 64px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-top: 6px solid #34d399;
+      }
+      .mono { font-family: 'JetBrains Mono', monospace; }
+      .accent { color: #34d399; }
+      .muted { color: #8b949e; }
+      .kicker { font-size: 28px; letter-spacing: 0.1em; }
+      h1 { margin: 24px 0 0; font-size: 96px; line-height: 1; font-weight: 700; letter-spacing: -0.02em; }
+      .tagline { margin-top: 28px; max-width: 920px; font-size: 36px; line-height: 1.35; }
+      .foot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 28px;
+        border-top: 1px solid #30363d;
+        font-size: 26px;
+      }
+      .logo { color: #e6edf3; font-weight: 700; }
+      .pill {
+        padding: 8px 20px;
+        border: 1px solid rgba(52, 211, 153, 0.3);
+        border-radius: 999px;
+        background: rgba(52, 211, 153, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div>
+        <div class="mono kicker accent">// software engineer</div>
+        <h1>Phuc Tran Nguyen</h1>
+        <div class="tagline muted">
+          Building across the stack — from <span class="accent">ML</span> and
+          <span class="accent">backend systems</span> to <span class="accent">web apps</span>.
+        </div>
+      </div>
+      <div class="foot mono muted">
+        <span><span>~/</span><span class="logo">phuc</span><span class="accent">_</span>&nbsp;&nbsp;tnphucccc.github.io/portfolio</span>
+        <span class="pill accent">Open to full-time roles</span>
+      </div>
+    </div>
+  </body>
+</html>

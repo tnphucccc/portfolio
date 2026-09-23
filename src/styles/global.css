@@ -2,6 +2,7 @@
 
 /* The plan/spec docs are full of class names; don't generate CSS for them. */
 @source not "../../docs";
+@source not "../../scripts";
 
 @theme {
   --color-bg: #0d1117;

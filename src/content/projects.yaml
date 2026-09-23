@@ -29,22 +29,20 @@
   repo: https://github.com/tnphucccc/sol-me
   badge: 🏆 3rd Prize · Solana Consumer Hack 16
   summary: >-
-    Telegram crypto-wallet assistant that simplifies the crypto transaction
-    process, built end-to-end in TypeScript under hackathon constraints.
+    Built a Telegram chat app with integrated Solana token transactions
+    (TypeScript backend, on-chain smart-contract layer, and Telegram bot
+    interface) under hackathon constraints.
   tags:
     - TypeScript
-    - Solana
-    - Telegram
 - id: lib-man
   name: LibMan
   order: 4
   repo: https://github.com/tnphucccc/lib-man
   summary: >-
-    Led an 8-person team (157 commits) building a full-stack library
-    management system in Java Spring Boot + React/TypeScript; designed RESTful
-    APIs and managed frontend state with Hooks.
+    Led an 8-person team building a full-stack library management system;
+    designed and documented the Java Spring Boot REST API (Swagger), backed by
+    PostgreSQL and containerized with Docker.
   tags:
     - Java
     - Spring Boot
-    - React
-    - TypeScript
+    - PostgreSQL
