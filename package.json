@@ -10,10 +10,10 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "vitest run --passWithNoTests && astro check && astro build",
+    "build": "vitest run && astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",

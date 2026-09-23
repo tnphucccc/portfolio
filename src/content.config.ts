@@ -68,6 +68,8 @@ const education = defineCollection({
 const projects = defineCollection({
   loader: file('src/content/projects.yaml'),
   schema: z.object({
+    // Project ids become case-study URLs (/projects/<id>/): lowercase kebab-case only.
+    id: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'project id must be lowercase kebab-case'),
     name: z.string(),
     summary: z.string(),
     tags: z.array(z.string().min(1)),
