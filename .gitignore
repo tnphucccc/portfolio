@@ -4,6 +4,9 @@ node_modules/
 # Ignore build output
 dist/
 
+# Ignore Astro generated types
+.astro/
+
 # Ignore IDE and editor files
 .vscode/
 .idea/
