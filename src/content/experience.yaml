@@ -1,8 +1,8 @@
 - id: metacraft-se
   title: Software Engineer
   org: Metacraft Studio · Under Realm TCG · Ho Chi Minh City
-  period: Jan 2025 – Present
-  start: '2025-01'
+  period: Jan 2025 – Jun 2026
+  start: "2025-01"
   bullets:
     - >-
       Built the authoritative multiplayer duel server in **Rust** (Tokio +
@@ -28,7 +28,7 @@
   title: Software Engineer Intern
   org: Metacraft Studio · Under Realm TCG · Ho Chi Minh City
   period: Sep – Dec 2024
-  start: '2024-09'
+  start: "2024-09"
   bullets:
     - >-
       Designed and shipped the **quest system** end-to-end — MongoDB data
@@ -41,7 +41,7 @@
   title: Teaching Assistant — DSA & OOP
   org: International University – VNUHCM · Ho Chi Minh City
   period: Sep 2023 – Jan 2026
-  start: '2023-09'
+  start: "2023-09"
   bullets:
     - >-
       Evaluated code submissions across DSA and OOP courses — assessing
